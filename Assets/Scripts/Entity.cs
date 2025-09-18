@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -6,6 +7,10 @@ public class Entity : MonoBehaviour
     public string entityName;
     public int currentHealth;
     public int maxHealth;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI playerHealth;
+    public TextMeshProUGUI enemyHealth;
 
     void Start()
     {
@@ -24,7 +29,12 @@ public class Entity : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log($"{entityName} took {damage} damage. Current health: {currentHealth}");
+
+        // update UI
+        if (entityName == "Player" && playerHealth != null)
+            playerHealth.text = $"Player Health: {currentHealth}/{maxHealth}";
+        else if (entityName == "Enemy" && enemyHealth != null)
+            enemyHealth.text = $"Enemy Health: {currentHealth}/{maxHealth}";
 
         if (currentHealth <= 0)
             Die();
