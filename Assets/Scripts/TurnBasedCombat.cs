@@ -2,37 +2,34 @@ using UnityEngine;
 
 public class TurnBasedCombat : MonoBehaviour
 {
-    Weapons weapons;
+    public Entity player;   
+    public Entity enemy; 
 
-    public GameObject player;
-    public GameObject enemy;
-
-    Entity entityscript;
-
-    Entity enemyentity = new Entity();
-
-    public bool isAttacking;
+    bool playerTurn = true;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             TakeTurn();
+        }
     }
 
     void TakeTurn()
     {
-        isAttacking = true;
-        
-        if (entityscript.currentHealth <= 0)
+        if (playerTurn)
         {
-            entityscript.Die();
-            isAttacking = false;
+            // player attacks enemy
+            player.Attack(enemy);
         }
         else
         {
-            entityscript.Attack(enemyentity);
-            isAttacking = false;
+            // enemy attacks player
+            enemy.Attack(player);
         }
+
+        // switch turn
+        playerTurn = !playerTurn;
         
     }
 }
